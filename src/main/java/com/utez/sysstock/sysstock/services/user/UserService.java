@@ -75,9 +75,9 @@ public class UserService {
 
 
     //insertar usuarios con foto y contraseña
-    private String uploadDirectory =  ".//src//main//resources//files//";
+    //private String uploadDirectory =  ".//src//main//resources//files//";
     @Transactional(rollbackFor = {SQLException.class})
-    public CustomResponse<User> insert(User user, MultipartFile file) {
+    public CustomResponse<User> insert(User user) {
         Optional<User> exists = repository.findByName(user.getName());
         if (exists.isPresent()) {
             return new CustomResponse<>(
@@ -88,7 +88,7 @@ public class UserService {
             );
         }
 
-        if (file == null || file.isEmpty()) {
+        if (user.getEmail() == null || user.getEmail().isEmpty()) {
             return new CustomResponse<>(
                     null,
                     true,
@@ -97,24 +97,25 @@ public class UserService {
             );
         }
 
-        String fileName = file.getOriginalFilename();
-
-        Path filePath = Paths.get(uploadDirectory, fileName);
-        try {
-            Files.write(filePath, file.getBytes());
-        } catch (IOException e) {
-            return new CustomResponse<>(
-                    null,
-                    true,
-                    500,
-                    "Error al guardar el usuario"
-            );
-        }
+//        String fileName = file.getOriginalFilename();
+//
+//        Path filePath = Paths.get(uploadDirectory, fileName);
+//        try {
+//            //Files.write(filePath, file.getBytes());
+//
+//        } catch (IOException e) {
+//            return new CustomResponse<>(
+//                    null,
+//                    true,
+//                    500,
+//                    "Error al guardar el usuario"
+//            );
+//        }
 
         user.setPassword(
                 encoder.encode(user.getPassword()));
 
-        user.setProfilePhoto(fileName.getBytes());
+        //user.setProfilePhoto(fileName.getBytes());
         User savedUser= repository.save(user);
         return new CustomResponse<>(
                 savedUser,
@@ -136,22 +137,22 @@ public class UserService {
             );
         }
 
-        if (file != null && !file.isEmpty()) {
-            String fileName = file.getOriginalFilename();
-            Path filePath = Paths.get(uploadDirectory, fileName);
-
-            try {
-                Files.write(filePath, file.getBytes());
-                user.setProfilePhoto(fileName.getBytes());
-            } catch (IOException e) {
-                return new CustomResponse<>(
-                        null,
-                        true,
-                        500,
-                        "Error al guardar el usuario"
-                );
-            }
-        }
+//        if (file != null && !file.isEmpty()) {
+//            String fileName = file.getOriginalFilename();
+//            Path filePath = Paths.get(uploadDirectory, fileName);
+//
+//            try {
+//                Files.write(filePath, file.getBytes());
+//                //user.setProfilePhoto(fileName.getBytes());
+//            } catch (IOException e) {
+//                return new CustomResponse<>(
+//                        null,
+//                        true,
+//                        500,
+//                        "Error al guardar el usuario"
+//                );
+//            }
+//        }
 
         // Solo actualiza la contraseña si se proporciona una nueva contraseña
         if (!user.getPassword().isEmpty()) {

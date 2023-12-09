@@ -52,7 +52,7 @@ public class RecoveryPasswordController {
             data.put("secretPass", secretPass);
             emailService.sendMail(new EmailDto(
                     user.getEmail(),
-                    user.getName() + " " + user.getSurname() + " " + user.getLastname(),
+                    user.getName() + " :)",
                     "Cambio de contraseña | Código de verificación",
                     "Tu código de verificación es: " + secretPass
             ));
@@ -94,7 +94,7 @@ public class RecoveryPasswordController {
                 service.updateSecretPass(user, null);
                 emailService.sendMail(new EmailDto(
                         user.getEmail(),
-                        user.getName() + " " + user.getSurname() + " " + user.getLastname(),
+                        user.getName() + " :)",
                         "Cambio de contraseña",
                         "Se ha actualizado correctamente la contraseña de tu cuenta para el sistema SYSSTOCK"
                 ));

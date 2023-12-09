@@ -21,17 +21,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, updatable = false) // Evita que se actualice en ediciones
-    private byte[] ProfilePhoto;
+//    @Column(nullable = false, updatable = false) // Evita que se actualice en ediciones
+//    private byte[] ProfilePhoto;
 
     @Column(nullable = false,length = 45)
     private String name;
 
-    @Column(nullable = false,length = 45)
-    private String surname;
-
-    @Column(nullable = false,length = 45)
-    private String lastname;
+//    @Column(nullable = false,length = 45)
+//    private String surname;
+//
+//    @Column(nullable = false,length = 45)
+//    private String lastname;
 
     @Column(nullable = false,length = 45)
     private String email;

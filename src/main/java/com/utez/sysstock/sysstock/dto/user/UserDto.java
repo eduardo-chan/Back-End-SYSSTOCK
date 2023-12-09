@@ -19,18 +19,18 @@ import javax.validation.constraints.Size;
 public class UserDto {
 
     private Long id;
-    private MultipartFile ProfilePhoto;
+//    private MultipartFile ProfilePhoto;
     @NotEmpty(message = "Campo obligatorio")
     @Size(min = 1, max = 100)
     private String name;
     @NotEmpty(message = "Campo obligatorio")
     private String email;
-    @NotEmpty(message = "Campo obligatorio")
-    @Size(min = 1, max = 100)
-    private String surname;
-    @NotEmpty(message = "Campo obligatorio")
-    @Size(min = 1, max = 100)
-    private String lastname;
+//    @NotEmpty(message = "Campo obligatorio")
+//    @Size(min = 1, max = 100)
+//    private String surname;
+//    @NotEmpty(message = "Campo obligatorio")
+//    @Size(min = 1, max = 100)
+//    private String lastname;
     @NotEmpty(message = "Campo obligatorio")
     private String password;
     private Boolean status;
@@ -39,18 +39,18 @@ public class UserDto {
     private Role role;
 
     public User getUser() {
-        byte[] profilePhotoBytes = null;
-
-        if (getProfilePhoto() != null) {
-            profilePhotoBytes = getProfilePhoto().getOriginalFilename().getBytes();
-        }
+//        byte[] profilePhotoBytes = null;
+//
+//        if (getProfilePhoto() != null) {
+//            profilePhotoBytes = getProfilePhoto().getOriginalFilename().getBytes();
+//        }
 
         return new User(
                 getId(),
-                profilePhotoBytes,
+//                profilePhotoBytes,
                 getName(),
-                getSurname(),
-                getLastname(),
+//                getSurname(),
+//                getLastname(),
                 getEmail(),
                 getPassword(),
                 getStatus(),
