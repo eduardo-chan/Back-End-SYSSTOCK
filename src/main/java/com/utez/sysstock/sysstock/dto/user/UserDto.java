@@ -1,6 +1,8 @@
 package com.utez.sysstock.sysstock.dto.user;
 
 
+import com.utez.sysstock.sysstock.models.equipos.Equipos;
+import com.utez.sysstock.sysstock.models.prestamos.Prestamos;
 import com.utez.sysstock.sysstock.models.role.Role;
 import com.utez.sysstock.sysstock.models.user.User;
 import lombok.AllArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -37,6 +40,7 @@ public class UserDto {
     private String token;
     private String secretPass;
     private Role role;
+
 
     public User getUser() {
 //        byte[] profilePhotoBytes = null;

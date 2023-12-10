@@ -196,10 +196,11 @@ public class UserService {
         this.repository.saveAndFlush(user);
     }
 
-    //Cambio de status - borrado lógico
+
+    //delete by id
     @Transactional(rollbackFor = {SQLException.class})
-    public CustomResponse<Boolean> changeStatus(User user) {
-        if (!this.repository.existsById(user.getId())) {
+    public CustomResponse<Boolean> deleteUserById(Long id) {
+        if (!this.repository.existsById(id)) {
             return new CustomResponse<>(
                     null,
                     true,
@@ -207,26 +208,17 @@ public class UserService {
                     "El usuario no existe"
             );
         }
+
+        this.repository.deleteById(id);
+
         return new CustomResponse<>(
-                this.repository.updateStatusById(
-                        user.getStatus(), user.getId()) == 1,
+                true,
                 false,
                 200,
-                "Status Actualizado"
+                "Usuario eliminado exitosamente"
         );
     }
 
-    //Cambio de status - borrado lógico
-    public CustomResponse<Boolean> changeStatus(Long userId, boolean newStatus) {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
-
-        user.setStatus(newStatus);
-        repository.save(user);
-
-        return new CustomResponse<>(true, 200, "User status updated successfully");
-
-    }
 
 }
 //Developed by: Jose Eduardo Arroyo Palafox

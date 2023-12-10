@@ -1,7 +1,10 @@
 package com.utez.sysstock.sysstock.models.equipos;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.utez.sysstock.sysstock.models.categoria.Categoria;
+import com.utez.sysstock.sysstock.models.prestamos.Prestamos;
+import com.utez.sysstock.sysstock.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +12,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "equipos")
@@ -24,7 +28,7 @@ public class Equipos {
     private Long id;
 
     @Column(nullable = false, updatable = false) // Evita que se actualice en ediciones
-    private byte[] ProfilePhoto;
+        private byte[] ProfilePhoto;
 
     @Column(nullable = false,length = 45)
     private String name;
@@ -38,13 +42,21 @@ public class Equipos {
     @Column(nullable = false, columnDefinition = "TINYINT DEFAULT 1")
     private Boolean status;
 
+
+    //ubicación
+
+
     @ManyToOne
     @JoinColumn(name = "categoria_id",nullable = false)
     private Categoria categoria;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @OneToMany(mappedBy = "equipo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Prestamos> prestamos;
+
+
+
+
 
 
 }

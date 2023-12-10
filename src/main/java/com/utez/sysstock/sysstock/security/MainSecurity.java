@@ -66,6 +66,7 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api-sysstock/user/*","/api-sysstock/user/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api-sysstock/user/*","/api-sysstock/user/**").permitAll()
                 .antMatchers(HttpMethod.PATCH,"/api-sysstock/user/*","/api-sysstock/user/**").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/api-sysstock/user/*","/api-sysstock/user/**").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api-sysstock/categoria/*","/api-sysstock/categoria/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api-sysstock/categoria/*","/api-sysstock/categoria/**").permitAll()
@@ -76,11 +77,18 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api-sysstock/equipos/*","/api-sysstock/equipos/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api-sysstock/equipos/*","/api-sysstock/equipos/**").permitAll()
                 .antMatchers(HttpMethod.PATCH,"/api-sysstock/equipos/*","/api-sysstock/equipos/**").permitAll()
+                .antMatchers(HttpMethod.DELETE,"/api-sysstock/equipos/*","/api-sysstock/equipos/**").permitAll()
 
                 .antMatchers(HttpMethod.GET, "/api-sysstock/role/*","/api-sysstock/role/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api-sysstock/role/*","/api-sysstock/role/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api-sysstock/role/*","/api-sysstock/role/**").permitAll()
                 .antMatchers(HttpMethod.PATCH,"/api-sysstock/role/*","/api-sysstock/role/**").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api-sysstock/prestamos/*","/api-sysstock/prestamos/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api-sysstock/prestamos/*","/api-sysstock/prestamos/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api-sysstock/prestamos/*","/api-sysstock/prestamos/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api-sysstock/prestamos/*","/api-sysstock/prestamos/**").permitAll()
+
 
                 .antMatchers(HttpMethod.GET, "/api-sysstock/access/*","/api-sysstock/access/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api-sysstock/access/*","/api-sysstock/access/**").permitAll()

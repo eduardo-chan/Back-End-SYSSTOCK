@@ -3,6 +3,8 @@ package com.utez.sysstock.sysstock.dto.equipos;
 
 import com.utez.sysstock.sysstock.models.categoria.Categoria;
 import com.utez.sysstock.sysstock.models.equipos.Equipos;
+import com.utez.sysstock.sysstock.models.prestamos.Prestamos;
+import com.utez.sysstock.sysstock.models.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +35,8 @@ public class EquiposDto {
     private Date fecha;
     private Boolean status;
     private Categoria categoria;
+    private List<Prestamos> prestamos;
+
 
     public Equipos getEquipos() {
         byte[] profilePhotoBytes = null;
@@ -47,7 +52,8 @@ public class EquiposDto {
                 getDescription(),
                 getFecha(),
                 getStatus(),
-                getCategoria()
+                getCategoria(),
+                getPrestamos()
         );
 
     }

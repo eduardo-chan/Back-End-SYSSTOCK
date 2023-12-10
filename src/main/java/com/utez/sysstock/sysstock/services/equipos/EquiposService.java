@@ -139,19 +139,20 @@ public class EquiposService {
             }
         }
 
-        Equipos savedequipos= repository.save(equipos);
+        Equipos savedEquipo = repository.save(equipos);
         return new CustomResponse<>(
-                savedequipos,
+                savedEquipo,
                 false,
                 200,
-                "Equipo registrado"
+                "Equipo actualizado"
         );
     }
 
+
     //delete by id
     @Transactional(rollbackFor = {SQLException.class})
-    public CustomResponse<Boolean> deleteEquiposById(Long equipoId) {
-        if (!this.repository.existsById(equipoId)) {
+    public CustomResponse<Boolean> deleteEquiposById(Long id) {
+        if (!this.repository.existsById(id)) {
             return new CustomResponse<>(
                     null,
                     true,
@@ -160,7 +161,7 @@ public class EquiposService {
             );
         }
 
-        this.repository.deleteById(equipoId);
+        this.repository.deleteById(id);
 
         return new CustomResponse<>(
                 true,

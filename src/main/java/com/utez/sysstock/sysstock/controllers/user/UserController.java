@@ -1,6 +1,7 @@
 package com.utez.sysstock.sysstock.controllers.user;
 
 
+import com.utez.sysstock.sysstock.dto.prestamos.PrestamosDto;
 import com.utez.sysstock.sysstock.dto.user.UserDto;
 import com.utez.sysstock.sysstock.models.user.User;
 import com.utez.sysstock.sysstock.services.user.UserService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -75,19 +77,15 @@ public class UserController {
                 .body(response);
     }
 
-    //borradin lógico
-
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<CustomResponse<Boolean>> enableOrDisable(
-            @PathVariable("id") Long userId, @RequestBody Map<String, Boolean> request) {
-        boolean newStatus = request.get("status");
-        CustomResponse<Boolean> response = service.changeStatus(userId, newStatus);
-
-        // Utiliza la nueva ResponseEntityBuilder para construir la respuesta
-        return ResponseEntity
-                .status(response.getStatusCode()) // Establece el código de estado de la respuesta
-                .body(response); // Establece el cuerpo de la respuesta
+    @DeleteMapping("/")
+    public ResponseEntity<CustomResponse<Boolean>> deleteUserById(@ModelAttribute UserDto userDto) throws IOException {
+        return new ResponseEntity<>(
+                this.service.deleteUserById(userDto.getId()),
+                HttpStatus.OK
+        );
     }
+
+
 
 }
 //Developed by: Jose Eduardo Arroyo Palafox

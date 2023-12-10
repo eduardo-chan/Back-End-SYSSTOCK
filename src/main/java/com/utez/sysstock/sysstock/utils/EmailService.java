@@ -133,7 +133,7 @@ public class EmailService {
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t<table class=\"image_block block-1\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"presentation\" style=\"mso-table-lspace: 0pt; mso-table-rspace: 0pt;\">\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t<tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<td class=\"pad\" style=\"width:100%;padding-right:0px;padding-left:0px;\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"alignment\" align=\"center\" style=\"line-height:10px\"><img class=\"big\" src=\"\" style=\"display: block; height: auto; border: 0; width: 512px; max-width: 100%;\" width=\"512\"></div>\n" +
+                "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"alignment\" align=\"center\" style=\"line-height:10px\"><img class=\"big\" src=\"logo-sysstock.png\" style=\"display: block; height: auto; border: 0; width: 512px; max-width: 100%;\" width=\"512\"></div>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t\t</tr>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t</table>\n" +
@@ -219,6 +219,11 @@ public class EmailService {
                 "\n" +
                 "</html>";
     }
+
+
+
+
+
 
 
 }

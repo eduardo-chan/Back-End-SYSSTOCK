@@ -1,6 +1,9 @@
 package com.utez.sysstock.sysstock.models.user;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.utez.sysstock.sysstock.models.equipos.Equipos;
+import com.utez.sysstock.sysstock.models.prestamos.Prestamos;
 import com.utez.sysstock.sysstock.models.role.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,7 +28,7 @@ public class User {
 //    @Column(nullable = false, updatable = false) // Evita que se actualice en ediciones
 //    private byte[] ProfilePhoto;
 
-    @Column(nullable = false,length = 45)
+    @Column(nullable = false, length = 45)
     private String name;
 
 //    @Column(nullable = false,length = 45)
@@ -33,7 +37,7 @@ public class User {
 //    @Column(nullable = false,length = 45)
 //    private String lastname;
 
-    @Column(nullable = false,length = 45)
+    @Column(nullable = false, length = 45)
     private String email;
 
     @Column(nullable = false)
@@ -49,8 +53,11 @@ public class User {
     private String secretPass;
 
     @ManyToOne
-    @JoinColumn(name = "role_id",nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+
+
 
 
 }

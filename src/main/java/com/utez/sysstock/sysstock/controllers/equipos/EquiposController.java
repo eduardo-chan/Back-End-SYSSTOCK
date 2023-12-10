@@ -57,13 +57,14 @@ public class EquiposController {
     @PutMapping("/{id}")
     public ResponseEntity<CustomResponse<Equipos>> update(
             @PathVariable("id") Long id,
-            @RequestBody EquiposDto equiposDto) {
+            @ModelAttribute EquiposDto equiposDto) {
         // Obtén el equipo existente desde la base de datos
         Equipos existingEquipos = service.getOne(id).getData();
 
         // Actualiza los campos necesarios
         Equipos updatedEquipos = equiposDto.getEquipos();
 
+        existingEquipos.setProfilePhoto(updatedEquipos.getProfilePhoto());
         existingEquipos.setName(updatedEquipos.getName());
         existingEquipos.setDescription(updatedEquipos.getDescription());
         existingEquipos.setFecha(updatedEquipos.getFecha());
