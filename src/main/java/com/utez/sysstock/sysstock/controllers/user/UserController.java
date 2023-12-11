@@ -44,7 +44,8 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<CustomResponse<User>> insert(@Valid @ModelAttribute UserDto userDto){
+                                                        //@Valid @ModelAttribute
+    public ResponseEntity<CustomResponse<User>> insert(@Valid @RequestBody UserDto userDto){
         //MultipartFile file = userDto.getProfilePhoto();
         return new ResponseEntity<>(
                 this.service.insert(userDto.getUser()),
