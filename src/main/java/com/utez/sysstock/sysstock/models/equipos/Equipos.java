@@ -28,7 +28,7 @@ public class Equipos {
     private Long id;
 
     @Column(nullable = false, updatable = false) // Evita que se actualice en ediciones
-        private byte[] ProfilePhoto;
+    private byte[] ProfilePhoto;
 
     @Column(nullable = false,length = 45)
     private String name;
@@ -43,8 +43,14 @@ public class Equipos {
     private Boolean status;
 
 
-    //ubicación
+//    //ubicación
+//    @Column(nullable = false,length = 60)
+//    private String ubicacion;
 
+    //existencias
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
+    private int stock;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id",nullable = false)

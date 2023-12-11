@@ -9,11 +9,9 @@ import java.util.Optional;
 public interface PrestamosRepository extends JpaRepository<Prestamos, Long>  {
 
 
-//    //busca una lista de préstamos asociados a un usuario específico
-//    List<Prestamos> findByUsuario(User usuario);
-//
-//    Optional<Prestamos> findPrestamosById(Long id);
+    List<Prestamos> findByUsuarioAndStatus(User usuario, Boolean status);
 
+    List<Prestamos> findByUsuario(User usuario);
 
 
 }

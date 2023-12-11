@@ -34,6 +34,7 @@ public class EquiposDto {
     @DateTimeFormat(pattern = "dd/MM/yyyy")
     private Date fecha;
     private Boolean status;
+    private int stock;
     private Categoria categoria;
     private List<Prestamos> prestamos;
 
@@ -52,6 +53,7 @@ public class EquiposDto {
                 getDescription(),
                 getFecha(),
                 getStatus(),
+                getStock(),
                 getCategoria(),
                 getPrestamos()
         );

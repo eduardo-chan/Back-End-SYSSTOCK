@@ -67,6 +67,29 @@ public class PrestamosService {
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Prestamos> insert(Prestamos prestamos) {
 
+
+        // Verifica si el usuario tiene un préstamo activo
+        List<Prestamos> prestamosActivos = this.repository.findByUsuarioAndStatus(prestamos.getUsuario(), true);
+        if (!prestamosActivos.isEmpty()) {
+            return new CustomResponse<>(
+                    null,
+                    true,
+                    400,
+                    "El usuario ya tiene un préstamo activo."
+            );
+        }
+
+        // Verifica si el usuario ha alcanzado el límite de 3 préstamos
+        List<Prestamos> prestamosUsuario = this.repository.findByUsuario(prestamos.getUsuario());
+        if (prestamosUsuario.size() >= 3) {
+            return new CustomResponse<>(
+                    null,
+                    true,
+                    400,
+                    "El usuario ha alcanzado el límite de 3 préstamos."
+            );
+        }
+
         // Verifica que la cantidad de días no sea mayor a 4
         if (prestamos.getCantidadDias() > 4) {
             return new CustomResponse<>(
@@ -97,6 +120,11 @@ public class PrestamosService {
                     "El prestamo no existe"
             );
         }
+
+
+
+
+
 
         // Verifica que la cantidad de días no sea mayor a 4
         if (prestamos.getCantidadDias() > 4) {

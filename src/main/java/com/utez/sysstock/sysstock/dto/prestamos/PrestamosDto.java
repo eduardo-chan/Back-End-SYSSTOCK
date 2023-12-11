@@ -27,6 +27,8 @@ public class PrestamosDto {
 
     private Equipos equipo;
 
+    private User usuario;
+
 
 
 
@@ -36,7 +38,8 @@ public class PrestamosDto {
           getId(),
           getCantidadDias(),
           getStatus(),
-          getEquipo()
+          getEquipo(),
+          getUsuario()
         );
     }
 

@@ -68,11 +68,18 @@ public class EquiposService {
     public CustomResponse<Equipos> insert(Equipos equipo, MultipartFile file) {
         Optional<Equipos> exists = repository.findByName(equipo.getName());
         if (exists.isPresent()) {
+            //si el equipo ya existe, actualiza el stock en lugar de insertar uno nuevo
+            Equipos existingEquipo = exists.get();
+            existingEquipo.setStock(existingEquipo.getStock() + 1);
+
+            Equipos updatedEquipo = repository.saveAndFlush(existingEquipo);
+
+
             return new CustomResponse<>(
-                    null,
-                    true,
-                    400,
-                    "Equipo ya registrado"
+                    updatedEquipo,
+                    false,
+                    200,
+                    "Existencia de equipo actualizada"
             );
         }
 
@@ -100,6 +107,7 @@ public class EquiposService {
         }
 
         equipo.setProfilePhoto(fileName.getBytes());
+        equipo.setStock(1);  // Nuevo equipo, por lo tanto, establecemos el stock en 1
         Equipos savedEquipo = repository.save(equipo);
         return new CustomResponse<>(
                 savedEquipo,
@@ -113,6 +121,7 @@ public class EquiposService {
 
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Equipos> update(Equipos equipos, MultipartFile file) {
+
         if (!this.repository.existsById(equipos.getId())) {
             return new CustomResponse<>(
                     null,
@@ -152,7 +161,9 @@ public class EquiposService {
     //delete by id
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Boolean> deleteEquiposById(Long id) {
-        if (!this.repository.existsById(id)) {
+        Optional<Equipos> equipoOptional = repository.findById(id);
+
+        if (equipoOptional.isEmpty()) {
             return new CustomResponse<>(
                     null,
                     true,
@@ -161,15 +172,32 @@ public class EquiposService {
             );
         }
 
-        this.repository.deleteById(id);
+        Equipos equipo = equipoOptional.get();
 
-        return new CustomResponse<>(
-                true,
-                false,
-                200,
-                "Equipo eliminado exitosamente"
-        );
+        if (equipo.getStock() > 1) {
+            // Si el stock es mayor que 1, simplemente decrementa el stock
+            equipo.setStock(equipo.getStock() - 1);
+            repository.saveAndFlush(equipo);
+            return new CustomResponse<>(
+                    true,
+                    false,
+                    200,
+                    "Stock de " + equipo.getName() + " decrementado exitosamente"
+            );
+        } else {
+            // Si el stock es 1 o menos, elimina el equipo de la base de datos
+            repository.deleteById(id);
+            return new CustomResponse<>(
+                    true,
+                    false,
+                    200,
+                    "Equipo eliminado exitosamente"
+            );
+        }
+
+
     }
+
 
 
 

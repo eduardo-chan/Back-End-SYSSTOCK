@@ -40,6 +40,7 @@ public class UserDto {
     private String token;
     private String secretPass;
     private Role role;
+    private List<Prestamos> prestamos;
 
 
     public User getUser() {
@@ -60,7 +61,8 @@ public class UserDto {
                 getStatus(),
                 getToken(),
                 getSecretPass(),
-                getRole()
+                getRole(),
+                getPrestamos()
         );
     }
 }
