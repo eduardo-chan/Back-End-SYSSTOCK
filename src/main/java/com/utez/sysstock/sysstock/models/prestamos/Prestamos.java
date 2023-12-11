@@ -34,8 +34,8 @@ public class Prestamos {
     @JoinColumn(name = "equipo_id", nullable = false)
     private Equipos equipo;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User usuario;
 
 

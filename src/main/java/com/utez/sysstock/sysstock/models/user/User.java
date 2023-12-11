@@ -56,11 +56,13 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST)
     @JsonIgnore
     private List<Prestamos> prestamos;
 
-
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.PERSIST)
+    @JsonIgnore
+    private List<Equipos> equipos;
 
 
 

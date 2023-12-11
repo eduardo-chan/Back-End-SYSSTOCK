@@ -37,7 +37,7 @@ public class EquiposDto {
     private int stock;
     private Categoria categoria;
     private List<Prestamos> prestamos;
-
+    private User usuario;
 
     public Equipos getEquipos() {
         byte[] profilePhotoBytes = null;
@@ -55,7 +55,8 @@ public class EquiposDto {
                 getStatus(),
                 getStock(),
                 getCategoria(),
-                getPrestamos()
+                getPrestamos(),
+                getUsuario()
         );
 
     }

@@ -60,6 +60,10 @@ public class Equipos {
     @JsonIgnore
     private List<Prestamos> prestamos;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    private User usuario;
+
 
 
 

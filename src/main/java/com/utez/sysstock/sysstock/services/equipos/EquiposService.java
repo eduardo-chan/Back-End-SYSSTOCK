@@ -66,62 +66,60 @@ public class EquiposService {
     private String uploadDirectory =  ".//src//main//resources//files//";
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Equipos> insert(Equipos equipo, MultipartFile file) {
-        Optional<Equipos> exists = repository.findByName(equipo.getName());
-        if (exists.isPresent()) {
-            //si el equipo ya existe, actualiza el stock en lugar de insertar uno nuevo
-            Equipos existingEquipo = exists.get();
-            existingEquipo.setStock(existingEquipo.getStock() + 1);
+        Optional<Equipos> existingEquipo = repository.findByName(equipo.getName());
 
-            Equipos updatedEquipo = repository.saveAndFlush(existingEquipo);
-
-
+        if (existingEquipo.isPresent()) {
+            // El equipo ya existe, actualiza el stock
+            Equipos existing = existingEquipo.get();
+            existing.setStock(existing.getStock() + (equipo.getStock() > 0 ? equipo.getStock() : 1));
             return new CustomResponse<>(
-                    updatedEquipo,
+                    repository.saveAndFlush(existing),
                     false,
                     200,
-                    "Existencia de equipo actualizada"
+                    "Stock actualizado para el equipo: " + existing.getName()
             );
-        }
+        } else {
+            // El equipo no existe, crea uno nuevo
+            if (file == null || file.isEmpty()) {
+                return new CustomResponse<>(
+                        null,
+                        true,
+                        400,
+                        "Equipo inválido o vacío"
+                );
+            }
 
-        if (file == null || file.isEmpty()) {
+            String fileName = file.getOriginalFilename();
+            Path filePath = Paths.get(uploadDirectory, fileName);
+
+            try {
+                Files.write(filePath, file.getBytes());
+            } catch (IOException e) {
+                return new CustomResponse<>(
+                        null,
+                        true,
+                        500,
+                        "Error al guardar el equipo"
+                );
+            }
+
+            equipo.setProfilePhoto(fileName.getBytes());
+            equipo.setStock(equipo.getStock() > 0 ? equipo.getStock() : 1);
+            Equipos savedEquipo = repository.save(equipo);
             return new CustomResponse<>(
-                    null,
-                    true,
-                    400,
-                    "Equipo inválido o vacío"
+                    savedEquipo,
+                    false,
+                    200,
+                    "Equipo registrado"
             );
         }
-
-        String fileName = file.getOriginalFilename();
-
-        Path filePath = Paths.get(uploadDirectory, fileName);
-        try {
-            Files.write(filePath, file.getBytes());
-        } catch (IOException e) {
-            return new CustomResponse<>(
-                    null,
-                    true,
-                    500,
-                    "Error al guardar el equipo"
-            );
-        }
-
-        equipo.setProfilePhoto(fileName.getBytes());
-        equipo.setStock(1);  // Nuevo equipo, por lo tanto, establecemos el stock en 1
-        Equipos savedEquipo = repository.save(equipo);
-        return new CustomResponse<>(
-                savedEquipo,
-                false,
-                200,
-                "Equipo registrado"
-        );
     }
+
 
     //actualizar
 
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Equipos> update(Equipos equipos, MultipartFile file) {
-
         if (!this.repository.existsById(equipos.getId())) {
             return new CustomResponse<>(
                     null,
