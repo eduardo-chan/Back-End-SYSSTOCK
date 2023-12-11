@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,8 +68,6 @@ public class PrestamosService {
     //insert
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Prestamos> insert(Prestamos prestamos) {
-
-
         // Verifica si el usuario tiene un préstamo activo
         List<Prestamos> prestamosActivos = this.repository.findByUsuarioAndStatus(prestamos.getUsuario(), true);
         if (!prestamosActivos.isEmpty()) {
@@ -100,11 +100,41 @@ public class PrestamosService {
             );
         }
 
+        // Calcula la fecha de entrega esperada y la asigna al préstamo
+        LocalDate fechaEntregaEsperada = LocalDate.now().plusDays(prestamos.getCantidadDias());
+        prestamos.setFechaEntregaEsperada(fechaEntregaEsperada);
+
+        // Guarda el préstamo en la base de datos
+        Prestamos nuevoPrestamo = this.repository.saveAndFlush(prestamos);
+
+        // Verifica si el préstamo está vencido
+        if (LocalDate.now().isAfter(fechaEntregaEsperada)) {
+            // Calcula el número de días de retraso
+            long diasRetraso = ChronoUnit.DAYS.between(fechaEntregaEsperada, LocalDate.now());
+
+            // Calcula la multa total
+            double multa = diasRetraso * 20;
+
+            // Establece la multa en el préstamo
+            nuevoPrestamo.setMulta(multa);
+
+            // Actualiza el estado del préstamo y almacena la multa en la base de datos
+            nuevoPrestamo.setStatus(false);
+            this.repository.saveAndFlush(nuevoPrestamo);
+
+            return new CustomResponse<>(
+                    nuevoPrestamo,
+                    true,
+                    200,
+                    "Préstamo vencido. Multa acumulada: $" + multa
+            );
+        }
+
         return new CustomResponse<>(
-                this.repository.saveAndFlush(prestamos),
+                nuevoPrestamo,
                 false,
                 200,
-                "Prestamo solicitado, tienes " + prestamos.getCantidadDias() + " días para devolverlo"
+                "Préstamo solicitado, tienes " + prestamos.getCantidadDias() + " días para devolverlo"
         );
     }
 

@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +26,10 @@ public class PrestamosDto {
 
     private Boolean status;
 
+    private LocalDate fechaEntregaEsperada;
+
+    private double multa;
+
     private Equipos equipo;
 
     private User usuario;
@@ -38,6 +43,8 @@ public class PrestamosDto {
           getId(),
           getCantidadDias(),
           getStatus(),
+          getFechaEntregaEsperada(),
+          getMulta(),
           getEquipo(),
           getUsuario()
         );

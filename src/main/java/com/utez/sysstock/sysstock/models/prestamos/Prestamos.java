@@ -11,6 +11,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "prestamos")
@@ -29,6 +30,16 @@ public class Prestamos {
 
     @Column(nullable = false, columnDefinition = "TINYINT DEFAULT 1")
     private Boolean status;
+
+
+    //almacenar la fecha de entrega esperada (la fecha en la que el user debe devolver el equipo).
+    @Column(nullable = false)
+    private LocalDate fechaEntregaEsperada;
+
+//multaaaaa
+    @Column(nullable = false)
+    private double multa;
+
 
     @ManyToOne
     @JoinColumn(name = "equipo_id", nullable = false)
