@@ -68,6 +68,17 @@ public class PrestamosService {
     //insert
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Prestamos> insert(Prestamos prestamos) {
+
+        // verifica si el usuario está activo
+        if (!prestamos.getUsuario().getStatus()) {
+            return new CustomResponse<>(
+                    null,
+                    true,
+                    400,
+                    "El usuario no está activo y no puede solicitar préstamos."
+            );
+        }
+
         // Verifica si el usuario tiene un préstamo activo
         List<Prestamos> prestamosActivos = this.repository.findByUsuarioAndStatus(prestamos.getUsuario(), true);
         if (!prestamosActivos.isEmpty()) {
@@ -142,6 +153,7 @@ public class PrestamosService {
     //update
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Prestamos> update(Prestamos prestamos) {
+
         //se verifica si existe el prestamo por medio de su id
         if (!this.repository.existsById(prestamos.getId())) {
             return new CustomResponse<>(
@@ -152,6 +164,9 @@ public class PrestamosService {
             );
         }
 
+
+
+        //corregir esto, no puedo cambiar de status por esta validación
         // Verifica si el usuario tiene un préstamo activo
         List<Prestamos> prestamosActivos = this.repository.findByUsuarioAndStatus(prestamos.getUsuario(), true);
         if (!prestamosActivos.isEmpty()) {
@@ -214,7 +229,8 @@ public class PrestamosService {
                     nuevoPrestamo,
                     true,
                     200,
-                    "Préstamo vencido. Multa acumulada: $" + multa
+                    "Préstamo vencido." + " tienes "+ diasRetraso + " días de retraso. " +
+                            "Multa acumulada: $" + multa
             );
         }
 
