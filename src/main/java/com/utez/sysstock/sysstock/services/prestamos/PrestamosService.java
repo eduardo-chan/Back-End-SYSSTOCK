@@ -142,6 +142,7 @@ public class PrestamosService {
     //update
     @Transactional(rollbackFor = {SQLException.class})
     public CustomResponse<Prestamos> update(Prestamos prestamos) {
+        //se verifica si existe el prestamo por medio de su id
         if (!this.repository.existsById(prestamos.getId())) {
             return new CustomResponse<>(
                     null,
@@ -151,7 +152,28 @@ public class PrestamosService {
             );
         }
 
+        // Verifica si el usuario tiene un préstamo activo
+        List<Prestamos> prestamosActivos = this.repository.findByUsuarioAndStatus(prestamos.getUsuario(), true);
+        if (!prestamosActivos.isEmpty()) {
+            return new CustomResponse<>(
+                    null,
+                    true,
+                    400,
+                    "El usuario ya tiene un préstamo activo."
+            );
+        }
 
+
+        // Verifica si el usuario ha alcanzado el límite de 3 préstamos
+        List<Prestamos> prestamosUsuario = this.repository.findByUsuario(prestamos.getUsuario());
+        if (prestamosUsuario.size() >= 3) {
+            return new CustomResponse<>(
+                    null,
+                    true,
+                    400,
+                    "El usuario ha alcanzado el límite de 3 préstamos."
+            );
+        }
 
 
 
@@ -165,6 +187,38 @@ public class PrestamosService {
                     "La cantidad de días no puede ser mayor a 4"
             );
         }
+
+        // Calcula la fecha de entrega esperada y la asigna al préstamo
+        LocalDate fechaEntregaEsperada = LocalDate.now().plusDays(prestamos.getCantidadDias());
+        prestamos.setFechaEntregaEsperada(fechaEntregaEsperada);
+
+        // Guarda el préstamo en la base de datos
+        Prestamos nuevoPrestamo = this.repository.saveAndFlush(prestamos);
+
+        // Verifica si el préstamo está vencido
+        if (LocalDate.now().isAfter(fechaEntregaEsperada)) {
+            // Calcula el número de días de retraso
+            long diasRetraso = ChronoUnit.DAYS.between(fechaEntregaEsperada, LocalDate.now());
+
+            // Calcula la multa total
+            double multa = diasRetraso * 20;
+
+            // Establece la multa en el préstamo
+            nuevoPrestamo.setMulta(multa);
+
+            // Actualiza el estado del préstamo y almacena la multa en la base de datos
+            nuevoPrestamo.setStatus(false);
+            this.repository.saveAndFlush(nuevoPrestamo);
+
+            return new CustomResponse<>(
+                    nuevoPrestamo,
+                    true,
+                    200,
+                    "Préstamo vencido. Multa acumulada: $" + multa
+            );
+        }
+
+
         return new CustomResponse<>(
                 this.repository.saveAndFlush(prestamos),
                 false,
