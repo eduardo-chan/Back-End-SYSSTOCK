@@ -1,6 +1,8 @@
 package com.utez.sysstock.sysstock.utils;
 
 import com.utez.sysstock.sysstock.dto.email.EmailDto;
+import com.utez.sysstock.sysstock.dto.prestamos.PrestamosDto;
+import com.utez.sysstock.sysstock.services.prestamos.PrestamosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -220,7 +222,7 @@ public class EmailService {
                 "</html>";
     }
 
-    public boolean sendMailPrestamos(EmailDto email) {
+    public boolean sendMailPrestamos(EmailDto email, PrestamosDto prestamos) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);

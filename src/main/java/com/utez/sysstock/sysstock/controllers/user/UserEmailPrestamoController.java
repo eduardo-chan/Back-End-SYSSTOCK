@@ -2,9 +2,11 @@ package com.utez.sysstock.sysstock.controllers.user;
 
 import com.utez.sysstock.sysstock.dto.email.EmailDto;
 import com.utez.sysstock.sysstock.dto.prestamos.PrestamosDto;
+import com.utez.sysstock.sysstock.models.prestamos.Prestamos;
 import com.utez.sysstock.sysstock.models.user.User;
 import com.utez.sysstock.sysstock.security.dtos.UpdatePasswordDto;
 import com.utez.sysstock.sysstock.security.jwt.JwtProvider;
+import com.utez.sysstock.sysstock.services.prestamos.PrestamosService;
 import com.utez.sysstock.sysstock.services.user.UserService;
 import com.utez.sysstock.sysstock.utils.CustomResponse;
 import com.utez.sysstock.sysstock.utils.EmailService;
@@ -31,6 +33,9 @@ public class UserEmailPrestamoController {
     private JwtProvider provider;
     @Autowired
     private UserService service;
+
+    @Autowired
+    private PrestamosService prestamosService;
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private EmailService emailService;
@@ -49,16 +54,22 @@ información del préstamo de artículos.
 
     @PostMapping("/")
     public ResponseEntity<CustomResponse<Map<String, Object>>> emailPrestamos(
-            @Valid @RequestBody EmailDto emailDto, PrestamosDto prestamosDto) {
+            @Valid @RequestBody EmailDto emailDto,
+            PrestamosDto prestamosDto) {
         User user = service.getUserByEmail(emailDto.getEmail());
+
         if (user != null) {
+
+                System.out.println("Datos del préstamo recibido: " + prestamosDto.getEquipo());
+                // Resto del código
+
             emailService.sendMail(new EmailDto(
                     user.getEmail(),
                     user.getName() + " :)",
                     "Confirmación de solicitud de prestamo",
                     "Usted ha solicitado el siguiente artículo: " + prestamosDto.getEquipo() + ".\n"
-                            + "Tiene " + prestamosDto.getCantidadDias() + " para devoler el equipo, por" +
-                            " el contra contrario se aplicará una multa de $20 por día de retraso.\n"
+                            + "Tiene " + prestamosDto.getCantidadDias() + " días para devoler el equipo.\nPor" +
+                            " el contrario se aplicará una multa de $20 por día de retraso.\n"
                             + "Fecha límite de entrega: " + prestamosDto.getFechaEntregaEsperada() + "\n"
                             + "Favor de no responder este correo"
 
