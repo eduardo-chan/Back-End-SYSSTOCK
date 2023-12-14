@@ -62,6 +62,8 @@ public class MainSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api-sysstock/contact/**").permitAll()
                 .antMatchers("/api-sysstock/recovery/*").permitAll()
 
+                .antMatchers("/api-sysstock/prestamo-email/*").permitAll()
+
                 .antMatchers(HttpMethod.GET, "/api-sysstock/user/*","/api-sysstock/user/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api-sysstock/user/*","/api-sysstock/user/**").permitAll()
                 .antMatchers(HttpMethod.PUT,"/api-sysstock/user/*","/api-sysstock/user/**").permitAll()

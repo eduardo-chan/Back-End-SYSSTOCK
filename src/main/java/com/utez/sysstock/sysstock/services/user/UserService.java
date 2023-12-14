@@ -164,7 +164,7 @@ public class UserService {
                 savedUser,
                 false,
                 200,
-                "Usuario registrado"
+                "Usuario actualizado"
         );
     }
     //UpdatePassword
